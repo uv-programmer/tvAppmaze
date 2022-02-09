@@ -66,7 +66,17 @@ export default (navigation) => {
     axios.get('https://api.tvmaze.com/shows')
     .then(function (response) {
       console.log("data......",response)
-      setData(response)
+     // setData(response.data)
+       movieData = response.data.map(function(item) {
+        return {
+          key: item.id,
+          text: item.name,
+          uri:item.image.medium
+        };
+       
+      });
+      setData(movieData)
+console.log("print data array", movieData)
       return response;
     })
     .catch(function (error) {
@@ -74,7 +84,7 @@ export default (navigation) => {
     })
     }
   return (
- 
+ callApi(),
     <View style={styles.container}>
       <StatusBar style="light" />
       <SafeAreaView style={{ flex: 1 }}>
@@ -88,7 +98,7 @@ export default (navigation) => {
               {section.horizontal ? (
                 <FlatList
                   horizontal
-                  data={section.data}
+                  data={data}
                   renderItem={({ item }) =>
                   <TouchableOpacity onPress={() => callApi()}>
                   <ListItem item={item} />
